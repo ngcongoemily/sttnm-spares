@@ -240,6 +240,7 @@ function addToCart(product) {
 function removeFromCart(productId) {
   cart = cart.filter(item => item.id !== productId);
   renderCart();
+  console.log(`Product ${productId} removed, cart updated.`);
 }
 
 function renderCart() {
@@ -325,4 +326,5 @@ searchInput.addEventListener('input', (e) => {
 
 // ---------- INITIAL RENDER ----------
 renderFilteredProducts();
+
 renderCart();
