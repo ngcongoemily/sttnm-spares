@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STTNM AUTO SPARES</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <!-- Red Navbar -->
+  <nav class="navbar">
+    <div class="logo">STTNM AUTO SPARES</div>
+    <div class="contacts">
+      <span><i class="fas fa-map-marker-alt"></i> 838 portion 9, Midrand 1818</span>
+      <span><i class="fas fa-phone"></i> 011 879 5326</span>
+    </div>
+    <div class="auth-buttons">
+      <button id="adminLoginBtn"><i class="fas fa-user-shield"></i> Admin</button>
+      <button id="customerSigninBtn"><i class="fas fa-user"></i> Sign In</button>
+      <button id="logoutBtn" style="display: none;"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Product Side -->
+    <main class="products-area">
+      <!-- Filter Bar: Categories + Search -->
+      <div class="filter-bar">
+        <div class="categories">
+          <button class="category-btn active" data-category="all">All Products</button>
+          <button class="category-btn" data-category="Performance">Performance</button>
+          <button class="category-btn" data-category="Engine">Engine</button>
+          <button class="category-btn" data-category="Driver Needs">Driver Needs</button>
+        </div>
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search products...">
+          <i class="fas fa-search"></i>
+        </div>
+      </div>
+
+      <!-- Product Grid -->
+      <div class="products" id="productsGrid"></div>
+    </main>
+
+    <!-- Shopping Cart Sidebar -->
+    <aside class="cart">
+      <h2>Your Cart</h2>
+      <div id="cartItems"></div>
+      <p class="cart-total">Total: R<span id="cartTotal">0.00</span></p>
+      <button id="checkoutBtn" disabled>Checkout</button>
+      <p class="customer-note" id="customerNote">Sign in to checkout</p>
+    </aside>
+  </div>
+
+  <!-- Admin Panel (hidden by default) -->
+  <div id="adminPanel" class="admin-panel" style="display: none;">
+    <h3>Admin Panel</h3>
+    <form id="addProductForm">
+      <input type="text" id="productName" placeholder="Product name" required>
+      <input type="number" id="productPrice" placeholder="Price" required>
+      <input type="text" id="productCategory" placeholder="Category" required>
+      <input type="text" id="productImage" placeholder="Image filename (e.g., brake.jpg)">
+      <button type="submit">Add Product</button>
+    </form>
+  </div>
+
+  <!-- Admin Login Modal -->
+  <div id="adminModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Admin Login</h3>
+      <input type="text" id="adminUsername" placeholder="Username">
+      <input type="password" id="adminPin" placeholder="PIN">
+      <button id="adminLoginSubmit">Login</button>
+      <p id="adminError" style="color: red;"></p>
+    </div>
+  </div>
+
+  <!-- Customer Sign In Modal -->
+  <div id="customerModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Customer Sign In</h3>
+      <input type="text" id="customerName" placeholder="Your name">
+      <button id="customerSigninSubmit">Sign In</button>
+      <p id="customerError" style="color: red;"></p>
+    </div>
+  </div>
+
+  <!-- Payment Modal (fake card payment) -->
+  <div id="paymentModal" class="modal">
+    <div class="modal-content payment-modal">
+      <span class="close">&times;</span>
+      <h3>Enter Card Details</h3>
+      <p>Total: R<span id="paymentTotal">0.00</span></p>
+      <input type="text" id="cardNumber" placeholder="Card Number (16 digits)" maxlength="16">
+      <input type="text" id="cardExpiry" placeholder="MM/YY">
+      <input type="text" id="cardCvv" placeholder="CVV" maxlength="3">
+      <button id="payBtn">Pay Now</button>
+      <p id="paymentMessage" style="color: green;"></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
