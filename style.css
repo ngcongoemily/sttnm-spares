@@ -47,6 +47,31 @@ body {
   background: #ddd;
 }
 
+/* Hero Section */
+.hero {
+  text-align: center;
+  padding: 2rem;
+  background-color: #1e1e1e;
+  margin-bottom: 1rem;
+}
+
+.logo-image {
+  max-width: 400px;   /* Bigger logo */
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+.hero h1 {
+  color: red;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.hero p {
+  color: #aaa;
+  font-size: 1.2rem;
+}
+
 /* Main container */
 .container {
   display: flex;
@@ -312,4 +337,11 @@ body {
 #paymentMessage {
   margin-top: 0.5rem;
   font-weight: bold;
+}
+
+/* Empty cart message */
+.empty-cart {
+  color: #aaa;
+  text-align: center;
+  padding: 1rem 0;
 }
