@@ -19,15 +19,13 @@ let products = [
   { id: 14, name: "Car Jack", price: 480, category: "Driver Needs", image: "jack.jpg" },
   { id: 15, name: "Fire Extinguisher", price: 400, category: "Driver Needs", image: "extinguisher.jpg" },
   { id: 16, name: "Triangle", price: 80, category: "Driver Needs", image: "triangle.jpg" },
-  { id: 17, name: "Wheel", price: 850, category: "Driver Needs", image: "tire.jpg" }
+  { id: 17, name: "Wheel", price: 850, category: "Driver Needs", image: "wheel.jpg" }
 ];
 
 // ---------- GLOBAL VARIABLES ----------
 let cart = [];
 let isAdmin = false;
 let currentCustomer = null;
-
-// Filter state
 let currentCategory = 'all';
 let searchQuery = '';
 
@@ -39,18 +37,15 @@ const checkoutBtn = document.getElementById('checkoutBtn');
 const customerNote = document.getElementById('customerNote');
 const adminPanel = document.getElementById('adminPanel');
 
-// Modals
 const adminModal = document.getElementById('adminModal');
 const customerModal = document.getElementById('customerModal');
 const paymentModal = document.getElementById('paymentModal');
 const closeButtons = document.querySelectorAll('.close');
 
-// Payment elements
 const paymentTotalSpan = document.getElementById('paymentTotal');
 const payBtn = document.getElementById('payBtn');
 const paymentMessage = document.getElementById('paymentMessage');
 
-// Auth buttons
 const adminLoginBtn = document.getElementById('adminLoginBtn');
 const customerSigninBtn = document.getElementById('customerSigninBtn');
 const logoutBtn = document.getElementById('logoutBtn');
@@ -85,7 +80,6 @@ document.getElementById('adminLoginSubmit').onclick = function() {
     adminPanel.style.display = 'block';
     renderFilteredProducts();
 
-    // Update buttons
     adminLoginBtn.style.display = 'none';
     customerSigninBtn.style.display = 'none';
     logoutBtn.style.display = 'inline-block';
@@ -131,7 +125,6 @@ logoutBtn.onclick = function() {
   customerSigninBtn.style.display = 'inline-block';
   logoutBtn.style.display = 'none';
 
-  // Clear admin form
   document.getElementById('addProductForm').reset();
 };
 
@@ -139,12 +132,10 @@ logoutBtn.onclick = function() {
 function filterProducts() {
   let filtered = products;
 
-  // Apply category filter
   if (currentCategory !== 'all') {
     filtered = filtered.filter(p => p.category === currentCategory);
   }
 
-  // Apply search query
   if (searchQuery.trim() !== '') {
     filtered = filtered.filter(p => 
       p.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -165,11 +156,10 @@ function renderProducts(productsToRender) {
     const card = document.createElement('div');
     card.className = 'product-card';
 
-    // Image with fallback
     const img = document.createElement('img');
     img.src = product.image || 'https://via.placeholder.com/150?text=No+Image';
     img.alt = product.name;
-    img.onerror = () => img.src = 'https://via.placeholder.com/150?text=No+Image';
+    img.onerror = () => img.src = 'https://placehold.co/150x150?text=No+Image'; // fixed fallback
 
     const name = document.createElement('h3');
     name.textContent = product.name;
@@ -187,7 +177,6 @@ function renderProducts(productsToRender) {
     card.appendChild(price);
     card.appendChild(addBtn);
 
-    // Admin delete button
     if (isAdmin) {
       const deleteBtn = document.createElement('button');
       deleteBtn.textContent = 'Delete';
@@ -240,25 +229,38 @@ function addToCart(product) {
 function removeFromCart(productId) {
   cart = cart.filter(item => item.id !== productId);
   renderCart();
+  console.log(`Product ${productId} removed, cart updated.`); // added for debugging
 }
 
 function renderCart() {
   cartDiv.innerHTML = '';
   let total = 0;
-  cart.forEach(item => {
-    total += item.price * item.quantity;
-    const itemDiv = document.createElement('div');
-    itemDiv.className = 'cart-item';
-    itemDiv.innerHTML = `
-      <span>${item.name} x${item.quantity}</span>
-      <span>R${(item.price * item.quantity).toFixed(2)}</span>
-      <button onclick="removeFromCart(${item.id})" style="background:red; color:white; border:none; border-radius:4px; cursor:pointer;">✕</button>
-    `;
-    cartDiv.appendChild(itemDiv);
-  });
+  if (cart.length === 0) {
+    cartDiv.innerHTML = '<p class="empty-cart">Your cart is empty.</p>';
+  } else {
+    cart.forEach(item => {
+      total += item.price * item.quantity;
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'cart-item';
+      itemDiv.innerHTML = `
+        <span>${item.name} x${item.quantity}</span>
+        <span>R${(item.price * item.quantity).toFixed(2)}</span>
+        <button onclick="removeFromCart(${item.id})" style="background:red; color:white; border:none; border-radius:4px; cursor:pointer;">✕</button>
+      `;
+      cartDiv.appendChild(itemDiv);
+    });
+
+    const clearBtn = document.createElement('button');
+    clearBtn.textContent = 'Clear Cart';
+    clearBtn.style.cssText = 'width:100%; margin-top:10px; background:darkred; color:white; border:none; padding:5px; border-radius:4px; cursor:pointer;';
+    clearBtn.onclick = () => {
+      cart = [];
+      renderCart();
+    };
+    cartDiv.appendChild(clearBtn);
+  }
   cartTotalSpan.textContent = total.toFixed(2);
 }
-// Make removeFromCart globally accessible (for inline onclick)
 window.removeFromCart = removeFromCart;
 
 // ---------- CHECKOUT & PAYMENT ----------
@@ -305,13 +307,9 @@ payBtn.onclick = function() {
 const categoryBtns = document.querySelectorAll('.category-btn');
 categoryBtns.forEach(btn => {
   btn.addEventListener('click', () => {
-    // Remove active class from all
     categoryBtns.forEach(b => b.classList.remove('active'));
-    // Add active to clicked
     btn.classList.add('active');
-    // Update current category
     currentCategory = btn.dataset.category;
-    // Re-render products
     renderFilteredProducts();
   });
 });
@@ -325,6 +323,5 @@ searchInput.addEventListener('input', (e) => {
 
 // ---------- INITIAL RENDER ----------
 renderFilteredProducts();
-
 renderCart();
 
